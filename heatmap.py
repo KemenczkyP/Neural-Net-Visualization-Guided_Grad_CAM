@@ -35,9 +35,11 @@ def HeatMap(grads, guided_bp, dims = 2):
     
     heatmap=np.multiply(g_c,
                         np.squeeze(guided_bp))
+    
+    # Scale heatmap to [0,1]
     minn=np.min(heatmap)
     heatmap=heatmap-minn
     maxx=np.max(heatmap)
     heatmap=heatmap/maxx*255
     
-    return g_c,heatmap
+    return g_c, heatmap
