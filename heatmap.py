@@ -17,9 +17,6 @@ def HeatMap(grads, guided_bp, dims = 2):
     import numpy as np
     import matplotlib.pyplot as plt
     
-    if(np.all(grads==0)):
-        return np.zeros((guided_bp.shape[1],guided_bp.shape[2]))
-    
     if(dims == 2):
         zoom_size = [guided_bp.shape[1]/grads.shape[0],
                      guided_bp.shape[2]/grads.shape[1]]
@@ -31,7 +28,10 @@ def HeatMap(grads, guided_bp, dims = 2):
     
     
     g_c=scipy.ndimage.zoom(grads, zoom_size)
-       
+    
+    if(np.all(grads==0)):
+        # Zero gradient btw logits and last feature map
+        return g_c, np.zeros((guided_bp.shape[1],guided_bp.shape[2]))
     
     heatmap=np.multiply(g_c,
                         np.squeeze(guided_bp))
